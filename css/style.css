@@ -1,6 +1,22 @@
 /*========================================================================*/
 
-
+.hunt {
+	position:relative;
+	width:auto;
+	height:auto;
+	margin:0 auto;
+	text-align:center;
+	line-height:180px;
+	font-size:56px;
+	color:#fff;
+	/* border-radius:50%; */
+	box-shadow:0 0 0 0 rgba(0,0,0,0.0);
+	margin-bottom:40px;
+	-webkit-transition:all .3s ease-out;
+	transition:all .3s ease-out;
+	/* border: 1px solid #E04343; */
+	background-color: black;
+}
 
 /* ///////////////////////////////////////////////////////////////////// 
 // 03 - Preloader
@@ -30,7 +46,7 @@ a {
 	-moz-transition:all 0.5s;
 	-o-transition:all 0.5s;
 	transition:all 0.5s;
-	border-bottom: 1px dashed;
+	border-bottom: 1px ;
 	outline:none!important;
 }
 a:hover,a:focus,a:active {
@@ -635,6 +651,42 @@ h1.arrow span {
 	transition:all .3s ease-out;
 	border: 1px solid #E04343;
 	color: #E04343;
+}
+a {
+	text-decoration: none;
+}
+.smaller_img {
+	position:relative;
+	width:180px;
+	height:180px;
+	margin:0 auto;
+	text-align:center;
+	line-height:180px;
+	font-size:56px;
+	color:#fff;
+	border-radius:50%;
+	box-shadow:0 0 0 0 rgba(0,0,0,0.0);
+	margin-bottom:40px;
+	-webkit-transition:all .3s ease-out;
+	transition:all .3s ease-out;
+	/* border: 1px solid #E04343; */
+	/* color: #E04343; */
+}
+.ucf_image
+{
+	position:relative;
+	width:165px;
+	height:165px;
+	margin:0 auto;
+	text-align:center;
+	line-height:180px;
+	font-size:56px;
+	color:#fff;
+	border-radius:50%;
+	box-shadow:0 0 0 0 rgba(0,0,0,0.0);
+	margin-bottom:40px;
+	-webkit-transition:all .3s ease-out;
+	transition:all .3s ease-out;
 }
 .services .item:hover .icon {
 	background: #E04343;
