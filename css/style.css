@@ -470,11 +470,12 @@ table {
 }
 /* ==========================================================================Hero========================================================================== */
 .hero {
-	background: url('../img/header-bg.jpg') right bottom no-repeat;
+	/* background: url('../img/header-bg11.jpg') right bottom no-repeat; */
 	background-size: contain;
 	padding:110px 0 100px 0;
 	height:auto;
 	background-color: #FBFBFB;
+
 }
 .hero h1 {
 	font-size: 120px;
@@ -1289,4 +1290,7 @@ ul.slides li {
 	    padding-bottom: 40px;
 	}
 }
+
+
+
 
