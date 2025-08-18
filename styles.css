@@ -293,13 +293,14 @@
             margin: 0 auto;
         }
 
-        /* Header Section */
+        /* Header Section with Parallax */
         #home {
             background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
             text-align: center;
             position: relative;
             overflow: hidden;
             min-height: 100vh;
+            transform-style: preserve-3d;
         }
 
         #home::before {
@@ -310,6 +311,25 @@
             right: 0;
             bottom: 0;
             background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
+            transform: translateZ(-1px) scale(1.1);
+        }
+
+        /* Parallax layers */
+        .parallax-bg {
+            position: absolute;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(circle at 30% 70%, rgba(34, 211, 238, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+            transform: translateZ(-2px) scale(1.2);
+            animation: parallaxFloat 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes parallaxFloat {
+            0% { transform: translateZ(-2px) scale(1.2) translate(0, 0); }
+            100% { transform: translateZ(-2px) scale(1.2) translate(-2%, -2%); }
         }
 
         .header-content {
@@ -503,7 +523,7 @@
             position: fixed;
             bottom: 30px;
             left: 30px;
-            z-index: 1000;
+            z-index: 1001;
             background: rgba(17, 24, 39, 0.95);
             backdrop-filter: blur(20px);
             border: 1px solid var(--border-color);
@@ -511,7 +531,7 @@
             padding: 12px 16px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
-            opacity: 0.8;
+            opacity: 0.9;
         }
 
         .floating-toggle:hover {
@@ -973,7 +993,8 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
-            z-index: 1000;
+            z-index: 1001;
+            pointer-events: auto;
         }
 
         .scroll-top.visible {
@@ -1095,16 +1116,10 @@
             position: fixed;
             bottom: 90px;
             left: 110px;
-            z-index: 999;
-            opacity: 0;
+            z-index: 1002;
+            opacity: 1;
             transition: all 0.5s ease;
             pointer-events: none;
-            transform: translateY(20px);
-        }
-
-        .hint-arrow.visible {
-            opacity: 1;
-            transform: translateY(0);
             animation: hintPulse 2s infinite;
         }
 
@@ -1163,6 +1178,364 @@
                 opacity: 0.7;
                 transform: scale(1.05);
             }
+        }
+
+        /* Canvas Layers */
+        #particleCanvas,
+        #trailCanvas,
+        #matrixCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        #particleCanvas {
+            z-index: 1;
+            opacity: 0.6;
+        }
+
+        #trailCanvas {
+            z-index: 2;
+            opacity: 0.8;
+        }
+
+        #matrixCanvas {
+            z-index: 3;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Matrix effect when code mode is active */
+        body.code-mode #matrixCanvas {
+            opacity: 0.3;
+        }
+
+        /* Home section particle canvas */
+        #homeParticleCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        /* Ensure content stays above particles */
+        .navbar,
+        .content-section,
+        .footer {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* UI elements need highest z-index and pointer events */
+        .floating-toggle,
+        .hint-arrow,
+        .scroll-top {
+            z-index: 1001;
+            pointer-events: auto;
+        }
+
+        .hint-arrow {
+            pointer-events: none; /* Keep hint arrow non-interactive */
+        }
+
+        /* Home section specific adjustments */
+        #home .header-content {
+            position: relative;
+            z-index: 15;
+        }
+
+
+        /* GitHub Activity Feed Styles */
+        .github-activity-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .activity-status {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.error {
+            background: #ef4444;
+        }
+
+        .status-dot.success {
+            background: #10b981;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .refresh-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--secondary);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(99, 102, 241, 0.1);
+            transform: rotate(180deg);
+        }
+
+        .refresh-btn.loading {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .activity-stats {
+            display: flex;
+            gap: 30px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            font-family: 'Fira Code', monospace;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .activity-feed {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            max-height: 500px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .activity-loading {
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--gray);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-item:hover {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .activity-icon.commit {
+            background: #10b981;
+        }
+
+        .activity-icon.repo {
+            background: #f59e0b;
+        }
+
+        .activity-icon.star {
+            background: #fbbf24;
+        }
+
+        .activity-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .activity-title {
+            color: var(--light);
+            font-weight: 600;
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+
+        .activity-description {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .activity-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.8rem;
+            color: var(--gray);
+            font-family: 'Fira Code', monospace;
+        }
+
+        .repo-link {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .repo-link:hover {
+            text-decoration: underline;
+        }
+
+        .commit-hash {
+            font-family: 'Fira Code', monospace;
+            background: rgba(99, 102, 241, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .github-profile-link {
+            text-align: center;
+        }
+
+        .github-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #24292e, #0d1117);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid #30363d;
+        }
+
+        .github-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(36, 41, 46, 0.4);
+            background: linear-gradient(135deg, #30363d, #161b22);
+        }
+
+        .github-btn i {
+            font-size: 1.2rem;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .activity-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .activity-stats {
+                gap: 20px;
+            }
+
+            .activity-item {
+                padding: 15px;
+            }
+
+            .activity-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+
+        /* Custom scrollbar for activity feed */
+        .activity-feed::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .activity-feed::-webkit-scrollbar-track {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .activity-feed::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 3px;
+        }
+
+        .activity-feed::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
         }
 
         /* Animation classes */

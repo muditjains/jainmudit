@@ -306,23 +306,657 @@ function typeWriter(element, text, speed = 100) {
 // Hint arrow functionality
 function hideHintArrow() {
     if (hintArrow) {
-        hintArrow.classList.remove('visible');
         hintArrow.classList.add('hidden');
     }
 }
 
-function showHintArrow() {
-    if (hintArrow) {
-        hintArrow.classList.remove('hidden');
-        hintArrow.classList.add('visible');
+// Particle System
+class ParticleSystem {
+    constructor() {
+        this.canvas = document.getElementById('particleCanvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.particles = [];
+        this.mouseX = 0;
+        this.mouseY = 0;
+        
+        // Code snippets and tech symbols to display
+        this.codeSnippets = [
+            'const', 'function', 'return', 'import', 'export',
+            '{...}', '() =>', '[]', '<>', '</>', '&&', '||',
+            'git', 'npm', 'yarn', 'node', 'react', 'js', 'ts',
+            'docker', 'aws', 'api', 'sql', 'json', 'html',
+            'css', 'sass', 'vue', 'angular', 'python', 'java'
+        ];
+        
+        this.colors = [
+            '#22d3ee', '#4f46e5', '#6366f1', '#8b5cf6',
+            '#a855f7', '#ec4899', '#f59e0b', '#10b981'
+        ];
+        
+        this.init();
+    }
+    
+    init() {
+        this.resize();
+        this.createParticles();
+        this.animate();
+        
+        // Handle window resize
+        window.addEventListener('resize', () => this.resize());
+        
+        // Mouse tracking for interaction
+        document.addEventListener('mousemove', (e) => {
+            this.mouseX = e.clientX;
+            this.mouseY = e.clientY;
+        });
+    }
+    
+    resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+    }
+    
+    createParticles() {
+        const particleCount = Math.min(50, Math.floor(window.innerWidth * window.innerHeight / 15000));
+        
+        for (let i = 0; i < particleCount; i++) {
+            this.particles.push({
+                x: Math.random() * this.canvas.width,
+                y: Math.random() * this.canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                text: this.codeSnippets[Math.floor(Math.random() * this.codeSnippets.length)],
+                color: this.colors[Math.floor(Math.random() * this.colors.length)],
+                fontSize: Math.random() * 8 + 10,
+                opacity: Math.random() * 0.5 + 0.1,
+                rotation: Math.random() * Math.PI * 2,
+                rotationSpeed: (Math.random() - 0.5) * 0.01
+            });
+        }
+    }
+    
+    animate() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        this.particles.forEach(particle => {
+            // Mouse repulsion effect
+            const dx = this.mouseX - particle.x;
+            const dy = this.mouseY - particle.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < 100) {
+                const force = (100 - distance) / 100;
+                particle.vx -= dx * force * 0.001;
+                particle.vy -= dy * force * 0.001;
+            }
+            
+            // Update position
+            particle.x += particle.vx;
+            particle.y += particle.vy;
+            particle.rotation += particle.rotationSpeed;
+            
+            // Bounce off edges
+            if (particle.x < 0 || particle.x > this.canvas.width) {
+                particle.vx *= -1;
+                particle.x = Math.max(0, Math.min(this.canvas.width, particle.x));
+            }
+            if (particle.y < 0 || particle.y > this.canvas.height) {
+                particle.vy *= -1;
+                particle.y = Math.max(0, Math.min(this.canvas.height, particle.y));
+            }
+            
+            // Draw particle
+            this.ctx.save();
+            this.ctx.translate(particle.x, particle.y);
+            this.ctx.rotate(particle.rotation);
+            this.ctx.font = `${particle.fontSize}px 'Fira Code', monospace`;
+            this.ctx.fillStyle = particle.color;
+            this.ctx.globalAlpha = particle.opacity;
+            this.ctx.textAlign = 'center';
+            this.ctx.textBaseline = 'middle';
+            this.ctx.fillText(particle.text, 0, 0);
+            this.ctx.restore();
+        });
+        
+        requestAnimationFrame(() => this.animate());
     }
 }
 
-// Show hint arrow initially with a delay
-window.addEventListener('load', () => {
-    setTimeout(() => {
-        if (hintArrow && window.scrollY < 50 && !codeToggle.checked) {
-            showHintArrow();
+// Home Section Particle System
+class HomeParticleSystem {
+    constructor() {
+        this.canvas = document.getElementById('homeParticleCanvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.particles = [];
+        this.mouseX = 0;
+        this.mouseY = 0;
+        
+        // More focused code snippets for home section
+        this.heroSnippets = [
+            'Hello World!', 'console.log()', 'const dev =', 'function()',
+            'import *', 'export default', '=> {}', 'async/await',
+            'new Promise()', '.then()', 'useState()', 'useEffect()',
+            'git commit', 'npm start', 'docker run', 'aws deploy',
+            '<Component/>', 'API', 'JSON', 'REST', 'GraphQL',
+            'ML', 'AI', 'IoT', 'Cloud', 'Fullstack'
+        ];
+        
+        // Brighter colors for home section
+        this.colors = [
+            '#22d3ee', '#4f46e5', '#6366f1', '#8b5cf6',
+            '#a855f7', '#ec4899', '#f59e0b', '#10b981',
+            '#ffffff', '#e2e8f0'
+        ];
+        
+        this.init();
+    }
+    
+    init() {
+        this.resize();
+        this.createParticles();
+        this.animate();
+        
+        // Handle window resize
+        window.addEventListener('resize', () => this.resize());
+        
+        // Mouse tracking for interaction
+        document.addEventListener('mousemove', (e) => {
+            const homeSection = document.getElementById('home');
+            const rect = homeSection.getBoundingClientRect();
+            if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+                this.mouseX = e.clientX;
+                this.mouseY = e.clientY - rect.top;
+            }
+        });
+    }
+    
+    resize() {
+        const homeSection = document.getElementById('home');
+        this.canvas.width = homeSection.offsetWidth;
+        this.canvas.height = homeSection.offsetHeight;
+    }
+    
+    createParticles() {
+        const particleCount = Math.min(30, Math.floor(this.canvas.width * this.canvas.height / 20000));
+        
+        for (let i = 0; i < particleCount; i++) {
+            this.particles.push({
+                x: Math.random() * this.canvas.width,
+                y: Math.random() * this.canvas.height,
+                vx: (Math.random() - 0.5) * 0.8,
+                vy: (Math.random() - 0.5) * 0.8,
+                text: this.heroSnippets[Math.floor(Math.random() * this.heroSnippets.length)],
+                color: this.colors[Math.floor(Math.random() * this.colors.length)],
+                fontSize: Math.random() * 10 + 12,
+                opacity: Math.random() * 0.4 + 0.2,
+                rotation: Math.random() * Math.PI * 2,
+                rotationSpeed: (Math.random() - 0.5) * 0.015,
+                pulseSpeed: Math.random() * 0.02 + 0.01,
+                pulseOffset: Math.random() * Math.PI * 2
+            });
         }
-    }, 3000); // Show after 3 seconds
+    }
+    
+    animate() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        this.particles.forEach((particle, index) => {
+            // Mouse attraction effect (opposite of repulsion)
+            const dx = this.mouseX - particle.x;
+            const dy = this.mouseY - particle.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < 150) {
+                const force = (150 - distance) / 150 * 0.0005;
+                particle.vx += dx * force;
+                particle.vy += dy * force;
+            }
+            
+            // Update position with slight gravity toward center
+            particle.x += particle.vx;
+            particle.y += particle.vy;
+            particle.rotation += particle.rotationSpeed;
+            
+            // Gentle drift toward center
+            const centerX = this.canvas.width / 2;
+            const centerY = this.canvas.height / 2;
+            particle.vx += (centerX - particle.x) * 0.00001;
+            particle.vy += (centerY - particle.y) * 0.00001;
+            
+            // Bounce off edges with damping
+            if (particle.x < 0 || particle.x > this.canvas.width) {
+                particle.vx *= -0.8;
+                particle.x = Math.max(0, Math.min(this.canvas.width, particle.x));
+            }
+            if (particle.y < 0 || particle.y > this.canvas.height) {
+                particle.vy *= -0.8;
+                particle.y = Math.max(0, Math.min(this.canvas.height, particle.y));
+            }
+            
+            // Velocity damping
+            particle.vx *= 0.999;
+            particle.vy *= 0.999;
+            
+            // Pulsing opacity effect
+            const pulse = Math.sin(Date.now() * particle.pulseSpeed + particle.pulseOffset) * 0.1 + 0.9;
+            
+            // Draw particle with glow effect
+            this.ctx.save();
+            this.ctx.translate(particle.x, particle.y);
+            this.ctx.rotate(particle.rotation);
+            
+            // Glow effect
+            this.ctx.shadowColor = particle.color;
+            this.ctx.shadowBlur = 10;
+            
+            this.ctx.font = `${particle.fontSize}px 'Fira Code', monospace`;
+            this.ctx.fillStyle = particle.color;
+            this.ctx.globalAlpha = particle.opacity * pulse;
+            this.ctx.textAlign = 'center';
+            this.ctx.textBaseline = 'middle';
+            this.ctx.fillText(particle.text, 0, 0);
+            this.ctx.restore();
+        });
+        
+        requestAnimationFrame(() => this.animate());
+    }
+}
+
+// Mouse Trail System
+class MouseTrail {
+    constructor() {
+        this.canvas = document.getElementById('trailCanvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.trail = [];
+        this.maxTrailLength = 20;
+        
+        this.init();
+    }
+    
+    init() {
+        this.resize();
+        this.animate();
+        
+        window.addEventListener('resize', () => this.resize());
+        
+        document.addEventListener('mousemove', (e) => {
+            this.addTrailPoint(e.clientX, e.clientY);
+        });
+    }
+    
+    resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+    }
+    
+    addTrailPoint(x, y) {
+        this.trail.push({
+            x: x,
+            y: y,
+            life: 1.0,
+            size: Math.random() * 3 + 2
+        });
+        
+        if (this.trail.length > this.maxTrailLength) {
+            this.trail.shift();
+        }
+    }
+    
+    animate() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        for (let i = 0; i < this.trail.length; i++) {
+            const point = this.trail[i];
+            const gradient = this.ctx.createRadialGradient(point.x, point.y, 0, point.x, point.y, point.size * 2);
+            
+            gradient.addColorStop(0, `rgba(34, 211, 238, ${point.life * 0.6})`);
+            gradient.addColorStop(0.5, `rgba(99, 102, 241, ${point.life * 0.4})`);
+            gradient.addColorStop(1, `rgba(168, 85, 247, 0)`);
+            
+            this.ctx.fillStyle = gradient;
+            this.ctx.beginPath();
+            this.ctx.arc(point.x, point.y, point.size * point.life, 0, Math.PI * 2);
+            this.ctx.fill();
+            
+            point.life -= 0.05;
+            point.size *= 0.98;
+        }
+        
+        // Remove dead trail points
+        this.trail = this.trail.filter(point => point.life > 0);
+        
+        requestAnimationFrame(() => this.animate());
+    }
+}
+
+// Matrix Rain Effect
+class MatrixRain {
+    constructor() {
+        this.canvas = document.getElementById('matrixCanvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.drops = [];
+        this.chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*(){}[]<>?/|\\~`';
+        this.fontSize = 14;
+        this.columns = 0;
+        
+        this.init();
+    }
+    
+    init() {
+        this.resize();
+        this.createDrops();
+        this.animate();
+        
+        window.addEventListener('resize', () => {
+            this.resize();
+            this.createDrops();
+        });
+    }
+    
+    resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        this.columns = Math.floor(this.canvas.width / this.fontSize);
+    }
+    
+    createDrops() {
+        this.drops = [];
+        for (let i = 0; i < this.columns; i++) {
+            this.drops[i] = {
+                y: Math.random() * -500,
+                speed: Math.random() * 3 + 2
+            };
+        }
+    }
+    
+    animate() {
+        this.ctx.fillStyle = 'rgba(17, 24, 39, 0.05)';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        this.ctx.fillStyle = '#22d3ee';
+        this.ctx.font = `${this.fontSize}px 'Fira Code', monospace`;
+        
+        for (let i = 0; i < this.drops.length; i++) {
+            const char = this.chars[Math.floor(Math.random() * this.chars.length)];
+            const x = i * this.fontSize;
+            const y = this.drops[i].y;
+            
+            // Gradient effect for falling characters
+            const gradient = this.ctx.createLinearGradient(x, y - 100, x, y + 20);
+            gradient.addColorStop(0, 'rgba(34, 211, 238, 0)');
+            gradient.addColorStop(0.5, 'rgba(34, 211, 238, 0.8)');
+            gradient.addColorStop(1, 'rgba(34, 211, 238, 0.3)');
+            
+            this.ctx.fillStyle = gradient;
+            this.ctx.fillText(char, x, y);
+            
+            this.drops[i].y += this.drops[i].speed;
+            
+            if (this.drops[i].y > this.canvas.height && Math.random() > 0.975) {
+                this.drops[i].y = Math.random() * -200;
+                this.drops[i].speed = Math.random() * 3 + 2;
+            }
+        }
+        
+        requestAnimationFrame(() => this.animate());
+    }
+}
+
+// Parallax scroll effect
+function initParallax() {
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const parallaxBg = document.querySelector('.parallax-bg');
+        const homeSection = document.getElementById('home');
+        
+        if (parallaxBg && homeSection) {
+            const homeRect = homeSection.getBoundingClientRect();
+            if (homeRect.bottom > 0 && homeRect.top < window.innerHeight) {
+                const speed = scrolled * 0.5;
+                parallaxBg.style.transform = `translateZ(-2px) scale(1.2) translate(-2%, ${speed * 0.1}px)`;
+            }
+        }
+        
+        // Parallax for other sections
+        const sections = document.querySelectorAll('.content-section:not(#home)');
+        sections.forEach((section, index) => {
+            const rect = section.getBoundingClientRect();
+            if (rect.bottom > 0 && rect.top < window.innerHeight) {
+                const speed = (scrolled - section.offsetTop) * 0.1;
+                section.style.transform = `translateY(${speed}px)`;
+            }
+        });
+    });
+}
+
+
+// GitHub Activity Feed System
+class GitHubActivityFeed {
+    constructor() {
+        this.username = 'muditjains';
+        this.apiBase = 'https://api.github.com';
+        this.activityFeed = document.getElementById('activityFeed');
+        this.statusIndicator = document.getElementById('activityStatus');
+        this.refreshBtn = document.getElementById('refreshActivity');
+        this.statsElements = {
+            totalRepos: document.getElementById('totalRepos'),
+            totalCommits: document.getElementById('totalCommits'),
+            activeRepos: document.getElementById('activeRepos')
+        };
+        
+        this.init();
+    }
+    
+    init() {
+        this.loadActivity();
+        
+        // Refresh button functionality
+        this.refreshBtn.addEventListener('click', () => {
+            this.loadActivity();
+        });
+        
+        // Auto-refresh every 5 minutes
+        setInterval(() => {
+            this.loadActivity();
+        }, 300000);
+    }
+    
+    async loadActivity() {
+        this.setStatus('loading', 'Fetching latest activity...');
+        this.refreshBtn.classList.add('loading');
+        
+        try {
+            // Fetch user data and repositories
+            const [userResponse, reposResponse, eventsResponse] = await Promise.all([
+                fetch(`${this.apiBase}/users/${this.username}`),
+                fetch(`${this.apiBase}/users/${this.username}/repos?sort=updated&per_page=10`),
+                fetch(`${this.apiBase}/users/${this.username}/events/public?per_page=15`)
+            ]);
+            
+            if (!userResponse.ok || !reposResponse.ok || !eventsResponse.ok) {
+                throw new Error('GitHub API request failed');
+            }
+            
+            const userData = await userResponse.json();
+            const reposData = await reposResponse.json();
+            const eventsData = await eventsResponse.json();
+            
+            this.updateStats(userData, reposData, eventsData);
+            this.renderActivity(eventsData, reposData);
+            this.setStatus('success', `Last updated: ${new Date().toLocaleTimeString()}`);
+            
+        } catch (error) {
+            console.error('GitHub API Error:', error);
+            this.handleError();
+        }
+        
+        this.refreshBtn.classList.remove('loading');
+    }
+    
+    updateStats(userData, reposData, eventsData) {
+        // Total repositories
+        this.statsElements.totalRepos.textContent = userData.public_repos;
+        
+        // Recent commits count (from events)
+        const commitEvents = eventsData.filter(event => event.type === 'PushEvent');
+        const totalCommits = commitEvents.reduce((sum, event) => sum + (event.payload.commits?.length || 0), 0);
+        this.statsElements.totalCommits.textContent = totalCommits;
+        
+        // Active repositories this week
+        const oneWeekAgo = new Date();
+        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+        const activeRepos = reposData.filter(repo => new Date(repo.updated_at) > oneWeekAgo).length;
+        this.statsElements.activeRepos.textContent = activeRepos;
+    }
+    
+    renderActivity(eventsData, reposData) {
+        this.activityFeed.innerHTML = '';
+        
+        if (eventsData.length === 0) {
+            this.activityFeed.innerHTML = `
+                <div class="activity-loading">
+                    <p>No recent activity found.</p>
+                </div>
+            `;
+            return;
+        }
+        
+        eventsData.slice(0, 10).forEach(event => {
+            const activityItem = this.createActivityItem(event);
+            if (activityItem) {
+                this.activityFeed.appendChild(activityItem);
+            }
+        });
+    }
+    
+    createActivityItem(event) {
+        const item = document.createElement('div');
+        item.className = 'activity-item';
+        
+        const timeAgo = this.formatTimeAgo(new Date(event.created_at));
+        const repoName = event.repo.name.split('/')[1];
+        const repoUrl = `https://github.com/${event.repo.name}`;
+        
+        let icon = '📝';
+        let title = '';
+        let description = '';
+        let iconClass = '';
+        
+        switch (event.type) {
+            case 'PushEvent':
+                icon = '🔧';
+                iconClass = 'commit';
+                const commitCount = event.payload.commits?.length || 0;
+                title = `Pushed ${commitCount} commit${commitCount !== 1 ? 's' : ''} to ${repoName}`;
+                if (event.payload.commits && event.payload.commits.length > 0) {
+                    const lastCommit = event.payload.commits[event.payload.commits.length - 1];
+                    description = lastCommit.message.length > 80 
+                        ? lastCommit.message.substring(0, 80) + '...'
+                        : lastCommit.message;
+                }
+                break;
+                
+            case 'CreateEvent':
+                icon = '🆕';
+                iconClass = 'repo';
+                if (event.payload.ref_type === 'repository') {
+                    title = `Created repository ${repoName}`;
+                    description = event.payload.description || 'New repository created';
+                } else {
+                    title = `Created ${event.payload.ref_type} ${event.payload.ref} in ${repoName}`;
+                }
+                break;
+                
+            case 'WatchEvent':
+                icon = '⭐';
+                iconClass = 'star';
+                title = `Starred ${repoName}`;
+                break;
+                
+            case 'IssuesEvent':
+                icon = '🐛';
+                iconClass = 'repo';
+                title = `${event.payload.action} issue in ${repoName}`;
+                description = event.payload.issue?.title || '';
+                break;
+                
+            case 'PullRequestEvent':
+                icon = '🔀';
+                iconClass = 'repo';
+                title = `${event.payload.action} pull request in ${repoName}`;
+                description = event.payload.pull_request?.title || '';
+                break;
+                
+            case 'ForkEvent':
+                icon = '🍴';
+                iconClass = 'repo';
+                title = `Forked ${repoName}`;
+                break;
+                
+            default:
+                return null; // Skip unsupported event types
+        }
+        
+        item.innerHTML = `
+            <div class="activity-icon ${iconClass}">
+                ${icon}
+            </div>
+            <div class="activity-content">
+                <div class="activity-title">${title}</div>
+                ${description ? `<div class="activity-description">${description}</div>` : ''}
+                <div class="activity-meta">
+                    <a href="${repoUrl}" class="repo-link" target="_blank">${event.repo.name}</a>
+                    <span>${timeAgo}</span>
+                </div>
+            </div>
+        `;
+        
+        return item;
+    }
+    
+    formatTimeAgo(date) {
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - date) / 1000);
+        
+        if (diffInSeconds < 60) return 'just now';
+        if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+        if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+        if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+        return `${Math.floor(diffInSeconds / 604800)}w ago`;
+    }
+    
+    setStatus(type, message) {
+        const statusDot = this.statusIndicator.querySelector('.status-dot');
+        const statusText = this.statusIndicator.querySelector('.status-text');
+        
+        statusDot.className = `status-dot ${type}`;
+        statusText.textContent = message;
+    }
+    
+    handleError() {
+        this.setStatus('error', 'Failed to load GitHub activity');
+        this.activityFeed.innerHTML = `
+            <div class="activity-loading">
+                <p>Unable to load GitHub activity. Please try again later.</p>
+                <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.7;">
+                    This might be due to API rate limits or network issues.
+                </p>
+            </div>
+        `;
+        
+        // Reset stats
+        Object.values(this.statsElements).forEach(element => {
+            element.textContent = '-';
+        });
+    }
+}
+
+// Initialize all systems when page loads
+window.addEventListener('load', () => {
+    new ParticleSystem();
+    new HomeParticleSystem();
+    new MouseTrail();
+    new MatrixRain();
+    initParallax();
+    new GitHubActivityFeed();
 });

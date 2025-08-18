@@ -37,6 +37,7 @@
                 <a href="#education" class="nav-link">Education</a>
                 <a href="#experience" class="nav-link">Experience</a>
                 <a href="#projects" class="nav-link">Projects</a>
+                <a href="#github" class="nav-link">GitHub</a>
                 <a href="#skills" class="nav-link">Skills</a>
                 <a href="#contact" class="nav-link">Contact</a>
             </div>
@@ -50,6 +51,7 @@
                 <a href="#education" class="nav-link">Education</a>
                 <a href="#experience" class="nav-link">Experience</a>
                 <a href="#projects" class="nav-link">Projects</a>
+                <a href="#github" class="nav-link">GitHub</a>
                 <a href="#skills" class="nav-link">Skills</a>
                 <a href="#contact" class="nav-link">Contact</a>
             </div>
@@ -57,6 +59,10 @@
     </nav>
 
     <section id="home" class="content-section">
+        <!-- Parallax background layer -->
+        <div class="parallax-bg"></div>
+        <!-- Home section particle canvas -->
+        <canvas id="homeParticleCanvas"></canvas>
         <div class="header-content">
             <h1>
                 <span class="code-syntax before" id="codeBefore">const </span>
@@ -416,6 +422,59 @@
         </div>
     </section>
 
+    <section id="github" class="content-section">
+        <div class="content-container">
+            <h2 class="section-title fade-in">Live GitHub Activity</h2>
+            <p class="section-subtitle fade-in">
+                Real-time updates from my development work
+            </p>
+            
+            <!-- GitHub Activity Feed -->
+            <div class="github-activity-container fade-in">
+                <div class="activity-header">
+                    <div class="activity-status">
+                        <div class="status-indicator" id="activityStatus">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Fetching latest activity...</span>
+                        </div>
+                        <button class="refresh-btn" id="refreshActivity">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <div class="activity-stats" id="activityStats">
+                        <div class="stat">
+                            <span class="stat-number" id="totalRepos">-</span>
+                            <span class="stat-label">Repositories</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" id="totalCommits">-</span>
+                            <span class="stat-label">Recent Commits</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" id="activeRepos">-</span>
+                            <span class="stat-label">Active This Week</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="activity-feed" id="activityFeed">
+                    <!-- Activity items will be populated by JavaScript -->
+                    <div class="activity-loading">
+                        <div class="loading-spinner"></div>
+                        <p>Loading GitHub activity...</p>
+                    </div>
+                </div>
+                
+                <div class="github-profile-link">
+                    <a href="https://github.com/muditjains" target="_blank" class="github-btn">
+                        <i class="fab fa-github"></i>
+                        View Full Profile on GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="skills" class="content-section">
         <div class="content-container">
             <h2 class="section-title fade-in">Technical Skills</h2>
@@ -592,6 +651,7 @@
                 <a href="#education">Education</a>
                 <a href="#experience">Experience</a>
                 <a href="#projects">Projects</a>
+                <a href="#github">GitHub</a>
                 <a href="#skills">Skills</a>
                 <a href="#contact">Contact</a>
             </div>
@@ -632,6 +692,14 @@
         </div>
         <div class="hint-text">Try the code view!</div>
     </div>
+
+
+    <!-- Particle System Canvas -->
+    <canvas id="particleCanvas"></canvas>
+    <!-- Mouse Trail Canvas -->
+    <canvas id="trailCanvas"></canvas>
+    <!-- Matrix Rain Canvas -->
+    <canvas id="matrixCanvas"></canvas>
 
     <script src="script.js"></script>
 </body>
