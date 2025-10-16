@@ -6,14 +6,62 @@
     <meta name="description" content="Mudit Jain - Software Engineer & Tech Innovator. MS Computer Science graduate from UT Dallas specializing in IoT, automation systems, and full-stack development.">
     <meta name="keywords" content="Mudit Jain, Software Engineer, Computer Science, IoT, Full Stack Developer, UT Dallas, Portfolio">
     <meta name="author" content="Mudit Jain">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Mudit Jain - Software Engineer & Tech Innovator">
+    <meta property="og:description" content="MS Computer Science graduate from UT Dallas specializing in IoT, automation systems, and full-stack development.">
+    <meta property="og:image" content="https://jainmudit.com/img/about1.png">
+    <meta property="og:url" content="https://jainmudit.com">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mudit Jain - Software Engineer">
+    <meta name="twitter:description" content="Portfolio of Mudit Jain - Software Engineer & Tech Innovator">
+    <meta name="twitter:image" content="https://jainmudit.com/img/about1.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://jainmudit.com">
+    
     <title>Mudit Jain - Software Engineer & Tech Innovator</title>
     <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&family=Fira+Code:wght@300;400;500;600;700&family=Source+Code+Pro:wght@300;400;500;600;700;900&family=Roboto+Mono:wght@300;400;500;600;700&family=Inconsolata:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Mudit Jain",
+      "jobTitle": "Software Engineer",
+      "url": "https://jainmudit.com",
+      "email": "Mudit.Jain@utdallas.edu",
+      "alumniOf": [
+        {
+          "@type": "EducationalOrganization",
+          "name": "University of Texas at Dallas"
+        },
+        {
+          "@type": "EducationalOrganization",
+          "name": "University of Central Florida"
+        }
+      ],
+      "sameAs": [
+        "https://github.com/muditjains",
+        "https://www.linkedin.com/in/mudit-jain-581342172/"
+      ]
+    }
+    </script>
 </head>
 <body>
-    <nav class="navbar" id="navbar">
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-content">
             <a href="#home" class="logo">
                 <span class="logo-icon">
@@ -41,7 +89,7 @@
                 <a href="#skills" class="nav-link">Skills</a>
                 <a href="#contact" class="nav-link">Contact</a>
             </div>
-            <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle mobile menu" aria-expanded="false">
                 <i class="fas fa-bars"></i>
             </button>
             <a href="#contact" class="resume-btn">Get In Touch</a>
@@ -58,13 +106,14 @@
         </div>
     </nav>
 
-    <section id="home" class="content-section">
+    <main id="main-content">
+    <section id="home" class="content-section" aria-labelledby="home-heading">
         <!-- Parallax background layer -->
         <div class="parallax-bg"></div>
         <!-- Home section particle canvas -->
         <canvas id="homeParticleCanvas"></canvas>
         <div class="header-content">
-            <h1>
+            <h1 id="home-heading">
                 <span class="code-syntax before" id="codeBefore">const </span>
                 Mudit Jain
                 <span class="code-syntax after" id="codeAfter"> = "Software Engineer";</span>
@@ -84,22 +133,22 @@
                 and full-stack development. Passionate about creating innovative solutions that make a difference.
             </p>
             <div class="social-links">
-                <a href="mailto:Mudit.Jain@utdallas.edu" title="Email">
-                    <i class="fas fa-envelope"></i>
+                <a href="mailto:Mudit.Jain@utdallas.edu" title="Email" aria-label="Send email to Mudit Jain">
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
                 </a>
-                <a href="https://github.com/muditjains" target="_blank" title="GitHub">
-                    <i class="fab fa-github"></i>
+                <a href="https://github.com/muditjains" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="Visit Mudit's GitHub profile">
+                    <i class="fab fa-github" aria-hidden="true"></i>
                 </a>
-                <a href="https://www.linkedin.com/in/mudit-jain-581342172/" target="_blank" title="LinkedIn">
-                    <i class="fab fa-linkedin"></i>
+                <a href="https://www.linkedin.com/in/mudit-jain-581342172/" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="Visit Mudit's LinkedIn profile">
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
                 </a>
             </div>
         </div>
     </section>
 
-    <section id="about" class="content-section">
+    <section id="about" class="content-section" aria-labelledby="about-heading">
         <div class="content-container">
-            <h2 class="section-title fade-in">About Me</h2>
+            <h2 id="about-heading" class="section-title fade-in">About Me</h2>
             <p class="section-subtitle fade-in">
                 Driven by curiosity and powered by innovation
             </p>
@@ -161,9 +210,9 @@
         </div>
     </section>
 
-    <section id="education" class="content-section">
+    <section id="education" class="content-section" aria-labelledby="education-heading">
         <div class="content-container">
-            <h2 class="section-title fade-in">Education</h2>
+            <h2 id="education-heading" class="section-title fade-in">Education</h2>
             <p class="section-subtitle fade-in">
                 Academic foundation in computer science and technology
             </p>
@@ -172,7 +221,7 @@
                 <div class="card fade-in">
                     <div class="education-item">
                         <div class="education-logo">
-                            <img src="img/utd.svg" alt="UT Dallas Logo">
+                            <img src="img/utd.svg" alt="University of Texas at Dallas Logo" loading="lazy">
                         </div>
                         <div class="education-details">
                             <h4>University of Texas at Dallas</h4>
@@ -188,7 +237,7 @@
                 <div class="card fade-in">
                     <div class="education-item">
                         <div class="education-logo">
-                            <img src="img/ucf.png" alt="UCF Logo">
+                            <img src="img/ucf.png" alt="University of Central Florida Logo" loading="lazy">
                         </div>
                         <div class="education-details">
                             <h4>University of Central Florida</h4>
@@ -234,9 +283,9 @@
         </div>
     </section>
 
-    <section id="experience" class="content-section">
+    <section id="experience" class="content-section" aria-labelledby="experience-heading">
         <div class="content-container">
-            <h2 class="section-title fade-in">Experience</h2>
+            <h2 id="experience-heading" class="section-title fade-in">Experience</h2>
             <p class="section-subtitle fade-in">
                 Professional journey and key achievements
             </p>
@@ -312,9 +361,9 @@
         </div>
     </section>
 
-    <section id="projects" class="content-section">
+    <section id="projects" class="content-section" aria-labelledby="projects-heading">
         <div class="content-container">
-            <h2 class="section-title fade-in">Featured Projects</h2>
+            <h2 id="projects-heading" class="section-title fade-in">Featured Projects</h2>
             <p class="section-subtitle fade-in">
                 Innovative solutions and technical achievements
             </p>
@@ -335,11 +384,11 @@
                         <span class="skill-tag">Mobile App</span>
                     </div>
                     <div class="project-links">
-                        <a href="#" class="project-link">
-                            <i class="fab fa-github"></i> View Code
+                        <a href="https://github.com/muditjains" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="View AutoShade project code on GitHub">
+                            <i class="fab fa-github" aria-hidden="true"></i> View Code
                         </a>
-                        <a href="#" class="project-link">
-                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        <a href="https://github.com/muditjains" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="View AutoShade live demo">
+                            <i class="fas fa-external-link-alt" aria-hidden="true"></i> Live Demo
                         </a>
                     </div>
                 </div>
@@ -358,11 +407,11 @@
                         <span class="skill-tag">Material Design</span>
                     </div>
                     <div class="project-links">
-                        <a href="#" class="project-link">
-                            <i class="fab fa-github"></i> View Code
+                        <a href="https://github.com/muditjains" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="View Hangboulder project code on GitHub">
+                            <i class="fab fa-github" aria-hidden="true"></i> View Code
                         </a>
-                        <a href="#" class="project-link">
-                            <i class="fab fa-google-play"></i> Play Store
+                        <a href="https://github.com/muditjains" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="View Hangboulder on Play Store">
+                            <i class="fab fa-google-play" aria-hidden="true"></i> Play Store
                         </a>
                     </div>
                 </div>
@@ -381,11 +430,11 @@
                         <span class="skill-tag">Healthcare</span>
                     </div>
                     <div class="project-links">
-                        <a href="#" class="project-link">
-                            <i class="fab fa-github"></i> View Code
+                        <a href="https://github.com/muditjains" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="View Children's Cartoon Visitor project code on GitHub">
+                            <i class="fab fa-github" aria-hidden="true"></i> View Code
                         </a>
-                        <a href="#" class="project-link">
-                            <i class="fas fa-external-link-alt"></i> Case Study
+                        <a href="https://github.com/muditjains" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="Read Children's Cartoon Visitor case study">
+                            <i class="fas fa-external-link-alt" aria-hidden="true"></i> Case Study
                         </a>
                     </div>
                 </div>
@@ -422,9 +471,9 @@
         </div>
     </section>
 
-    <section id="github" class="content-section">
+    <section id="github" class="content-section" aria-labelledby="github-heading">
         <div class="content-container">
-            <h2 class="section-title fade-in">Live GitHub Activity</h2>
+            <h2 id="github-heading" class="section-title fade-in">Live GitHub Activity</h2>
             <p class="section-subtitle fade-in">
                 Real-time updates from my development work
             </p>
@@ -457,7 +506,7 @@
                     </div>
                 </div>
                 
-                <div class="activity-feed" id="activityFeed">
+                <div class="activity-feed" id="activityFeed" role="feed" aria-busy="true" aria-live="polite">
                     <!-- Activity items will be populated by JavaScript -->
                     <div class="activity-loading">
                         <div class="loading-spinner"></div>
@@ -466,8 +515,8 @@
                 </div>
                 
                 <div class="github-profile-link">
-                    <a href="https://github.com/muditjains" target="_blank" class="github-btn">
-                        <i class="fab fa-github"></i>
+                    <a href="https://github.com/muditjains" target="_blank" rel="noopener noreferrer" class="github-btn" aria-label="View full GitHub profile">
+                        <i class="fab fa-github" aria-hidden="true"></i>
                         View Full Profile on GitHub
                     </a>
                 </div>
@@ -475,9 +524,9 @@
         </div>
     </section>
 
-    <section id="skills" class="content-section">
+    <section id="skills" class="content-section" aria-labelledby="skills-heading">
         <div class="content-container">
-            <h2 class="section-title fade-in">Technical Skills</h2>
+            <h2 id="skills-heading" class="section-title fade-in">Technical Skills</h2>
             <p class="section-subtitle fade-in">
                 Technologies and tools I work with
             </p>
@@ -562,9 +611,9 @@
         </div>
     </section>
 
-    <section id="contact" class="content-section">
+    <section id="contact" class="content-section" aria-labelledby="contact-heading">
         <div class="content-container">
-            <h2 class="section-title fade-in">Get In Touch</h2>
+            <h2 id="contact-heading" class="section-title fade-in">Get In Touch</h2>
             <p class="section-subtitle fade-in">
                 Let's discuss opportunities and collaborate on innovative projects
             </p>
@@ -573,22 +622,22 @@
                 <div class="card fade-in">
                     <h3>📧 Email</h3>
                     <p>Ready to discuss your next project or opportunity?</p>
-                    <a href="mailto:Mudit.Jain@utdallas.edu" class="project-link">
-                        <i class="fas fa-envelope"></i> Mudit.Jain@utdallas.edu
+                    <a href="mailto:Mudit.Jain@utdallas.edu" class="project-link" aria-label="Send email to Mudit Jain">
+                        <i class="fas fa-envelope" aria-hidden="true"></i> Mudit.Jain@utdallas.edu
                     </a>
                 </div>
                 <div class="card fade-in">
                     <h3>💼 LinkedIn</h3>
                     <p>Connect with me for professional networking and opportunities.</p>
-                    <a href="https://www.linkedin.com/in/mudit-jain-581342172/" target="_blank" class="project-link">
-                        <i class="fab fa-linkedin"></i> Connect on LinkedIn
+                    <a href="https://www.linkedin.com/in/mudit-jain-581342172/" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="Connect with Mudit on LinkedIn">
+                        <i class="fab fa-linkedin" aria-hidden="true"></i> Connect on LinkedIn
                     </a>
                 </div>
                 <div class="card fade-in">
                     <h3>💻 GitHub</h3>
                     <p>Explore my code repositories and open-source contributions.</p>
-                    <a href="https://github.com/muditjains" target="_blank" class="project-link">
-                        <i class="fab fa-github"></i> View GitHub Profile
+                    <a href="https://github.com/muditjains" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="View Mudit's GitHub profile">
+                        <i class="fab fa-github" aria-hidden="true"></i> View GitHub Profile
                     </a>
                 </div>
             </div>
@@ -618,32 +667,40 @@
             
             <div class="contact-form fade-in regular-content">
                 <h3 style="text-align: center; color: var(--secondary); margin-bottom: 30px;">Send me a message</h3>
-                <form action="#" method="POST">
+                <form id="contactForm" aria-label="Contact form" novalidate>
                     <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required>
+                        <label for="name">Name <span aria-label="required">*</span></label>
+                        <input type="text" id="name" name="name" required aria-required="true" aria-describedby="name-error">
+                        <span class="error-message" id="name-error" role="alert"></span>
                     </div>
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
+                        <label for="email">Email <span aria-label="required">*</span></label>
+                        <input type="email" id="email" name="email" required aria-required="true" aria-describedby="email-error">
+                        <span class="error-message" id="email-error" role="alert"></span>
                     </div>
                     <div class="form-group">
-                        <label for="subject">Subject</label>
-                        <input type="text" id="subject" name="subject" required>
+                        <label for="subject">Subject <span aria-label="required">*</span></label>
+                        <input type="text" id="subject" name="subject" required aria-required="true" aria-describedby="subject-error">
+                        <span class="error-message" id="subject-error" role="alert"></span>
                     </div>
                     <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" required placeholder="Tell me about your project or opportunity..."></textarea>
+                        <label for="message">Message <span aria-label="required">*</span></label>
+                        <textarea id="message" name="message" required aria-required="true" aria-describedby="message-error" placeholder="Tell me about your project or opportunity..."></textarea>
+                        <span class="error-message" id="message-error" role="alert"></span>
                     </div>
+                    <!-- Honeypot field for spam prevention -->
+                    <input type="text" name="honeypot" style="display:none" tabindex="-1" autocomplete="off">
                     <button type="submit" class="submit-btn">
-                        <i class="fas fa-paper-plane"></i> Send Message
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i> Send Message
                     </button>
+                    <div id="form-status" role="status" aria-live="polite"></div>
                 </form>
             </div>
         </div>
     </section>
+    </main>
 
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
         <div class="footer-content">
             <div class="footer-links">
                 <a href="#home">Home</a>
@@ -656,22 +713,22 @@
                 <a href="#contact">Contact</a>
             </div>
             <div class="social-links">
-                <a href="mailto:Mudit.Jain@utdallas.edu" title="Email">
-                    <i class="fas fa-envelope"></i>
+                <a href="mailto:Mudit.Jain@utdallas.edu" title="Email" aria-label="Send email to Mudit Jain">
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
                 </a>
-                <a href="https://github.com/muditjains" target="_blank" title="GitHub">
-                    <i class="fab fa-github"></i>
+                <a href="https://github.com/muditjains" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="Visit Mudit's GitHub profile">
+                    <i class="fab fa-github" aria-hidden="true"></i>
                 </a>
-                <a href="https://www.linkedin.com/in/mudit-jain-581342172/" target="_blank" title="LinkedIn">
-                    <i class="fab fa-linkedin"></i>
+                <a href="https://www.linkedin.com/in/mudit-jain-581342172/" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="Visit Mudit's LinkedIn profile">
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
                 </a>
             </div>
             <p>&copy; 2024 Mudit Jain. All rights reserved. Built with passion and innovation.</p>
         </div>
     </footer>
 
-    <button class="scroll-top" id="scrollTop">
-        <i class="fas fa-arrow-up"></i>
+    <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
+        <i class="fas fa-arrow-up" aria-hidden="true"></i>
     </button>
 
     <div class="floating-toggle" id="floatingToggle">
@@ -701,6 +758,6 @@
     <!-- Matrix Rain Canvas -->
     <canvas id="matrixCanvas"></canvas>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>

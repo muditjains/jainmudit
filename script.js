@@ -18,9 +18,13 @@ const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const mobileNav = document.getElementById('mobileNav');
 
 mobileMenuBtn.addEventListener('click', function() {
-    mobileNav.classList.toggle('open');
+    const isOpen = mobileNav.classList.toggle('open');
     const icon = this.querySelector('i');
-    if (mobileNav.classList.contains('open')) {
+    
+    // Update aria-expanded attribute
+    this.setAttribute('aria-expanded', isOpen);
+    
+    if (isOpen) {
         icon.classList.remove('fa-bars');
         icon.classList.add('fa-times');
     } else {
@@ -134,29 +138,155 @@ document.querySelectorAll('.fade-in').forEach(el => {
     observer.observe(el);
 });
 
-// Form submission (you can integrate with a backend service)
-document.querySelector('form').addEventListener('submit', function(e) {
-    e.preventDefault();
+// Form validation and submission
+const contactForm = document.getElementById('contactForm');
+const formStatus = document.getElementById('form-status');
+
+function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+
+function showError(fieldId, message) {
+    const field = document.getElementById(fieldId);
+    const errorElement = document.getElementById(`${fieldId}-error`);
     
-    // Get form data
-    const formData = new FormData(this);
-    const name = formData.get('name');
-    const email = formData.get('email');
-    const subject = formData.get('subject');
-    const message = formData.get('message');
+    field.classList.add('error');
+    errorElement.textContent = message;
+}
+
+function clearError(fieldId) {
+    const field = document.getElementById(fieldId);
+    const errorElement = document.getElementById(`${fieldId}-error`);
     
-    // Create mailto link as fallback
-    const mailtoLink = `mailto:Mudit.Jain@utdallas.edu?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+    field.classList.remove('error');
+    errorElement.textContent = '';
+}
+
+function clearAllErrors() {
+    ['name', 'email', 'subject', 'message'].forEach(clearError);
+}
+
+function validateForm(formData) {
+    let isValid = true;
+    clearAllErrors();
     
-    // Open email client
-    window.location.href = mailtoLink;
+    const name = formData.get('name').trim();
+    const email = formData.get('email').trim();
+    const subject = formData.get('subject').trim();
+    const message = formData.get('message').trim();
+    const honeypot = formData.get('honeypot');
     
-    // Show success message
-    alert('Thank you for your message! Your email client should open now.');
+    // Check honeypot (spam prevention)
+    if (honeypot) {
+        return false;
+    }
     
-    // Reset form
-    this.reset();
-});
+    if (!name || name.length < 2) {
+        showError('name', 'Please enter a valid name (at least 2 characters)');
+        isValid = false;
+    }
+    
+    if (!email || !validateEmail(email)) {
+        showError('email', 'Please enter a valid email address');
+        isValid = false;
+    }
+    
+    if (!subject || subject.length < 3) {
+        showError('subject', 'Please enter a subject (at least 3 characters)');
+        isValid = false;
+    }
+    
+    if (!message || message.length < 10) {
+        showError('message', 'Please enter a message (at least 10 characters)');
+        isValid = false;
+    }
+    
+    return isValid;
+}
+
+function showFormStatus(type, message) {
+    formStatus.className = type;
+    formStatus.textContent = message;
+    
+    // Auto-hide success message after 5 seconds
+    if (type === 'success') {
+        setTimeout(() => {
+            formStatus.className = '';
+            formStatus.textContent = '';
+        }, 5000);
+    }
+}
+
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = new FormData(this);
+        
+        // Validate form
+        if (!validateForm(formData)) {
+            showFormStatus('error', 'Please correct the errors above.');
+            return;
+        }
+        
+        const name = formData.get('name').trim();
+        const email = formData.get('email').trim();
+        const subject = formData.get('subject').trim();
+        const message = formData.get('message').trim();
+        
+        // Disable submit button during processing
+        const submitBtn = this.querySelector('.submit-btn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Sending...';
+        
+        try {
+            // Create mailto link as fallback
+            const mailtoLink = `mailto:Mudit.Jain@utdallas.edu?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+            
+            // Open email client
+            window.location.href = mailtoLink;
+            
+            // Show success message
+            showFormStatus('success', 'Thank you for your message! Your email client should open now.');
+            
+            // Reset form
+            this.reset();
+            clearAllErrors();
+        } catch (error) {
+            showFormStatus('error', 'There was an error sending your message. Please try again.');
+        } finally {
+            // Re-enable submit button
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane" aria-hidden="true"></i> Send Message';
+        }
+    });
+    
+    // Real-time validation
+    ['name', 'email', 'subject', 'message'].forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.addEventListener('blur', function() {
+                const formData = new FormData();
+                formData.append(fieldId, this.value);
+                
+                // Only validate the current field
+                if (fieldId === 'name' && this.value.trim().length > 0 && this.value.trim().length < 2) {
+                    showError(fieldId, 'Please enter a valid name (at least 2 characters)');
+                } else if (fieldId === 'email' && this.value.trim().length > 0 && !validateEmail(this.value.trim())) {
+                    showError(fieldId, 'Please enter a valid email address');
+                } else if (fieldId === 'subject' && this.value.trim().length > 0 && this.value.trim().length < 3) {
+                    showError(fieldId, 'Please enter a subject (at least 3 characters)');
+                } else if (fieldId === 'message' && this.value.trim().length > 0 && this.value.trim().length < 10) {
+                    showError(fieldId, 'Please enter a message (at least 10 characters)');
+                } else if (this.value.trim().length > 0) {
+                    clearError(fieldId);
+                }
+            });
+        }
+    });
+}
 
 // Add some interactive hover effects
 document.querySelectorAll('.skill-tag').forEach(tag => {
@@ -743,35 +873,76 @@ class GitHubActivityFeed {
             totalCommits: document.getElementById('totalCommits'),
             activeRepos: document.getElementById('activeRepos')
         };
+        this.retryCount = 0;
+        this.maxRetries = 3;
+        this.cacheTimeout = 300000; // 5 minutes
+        this.cachedData = null;
+        this.cacheTimestamp = null;
         
         this.init();
     }
     
     init() {
+        if (!this.activityFeed || !this.statusIndicator || !this.refreshBtn) {
+            console.warn('GitHub activity elements not found');
+            return;
+        }
+        
         this.loadActivity();
         
         // Refresh button functionality
         this.refreshBtn.addEventListener('click', () => {
-            this.loadActivity();
+            this.loadActivity(true); // Force refresh
         });
         
         // Auto-refresh every 5 minutes
         setInterval(() => {
             this.loadActivity();
-        }, 300000);
+        }, this.cacheTimeout);
     }
     
-    async loadActivity() {
+    async loadActivity(forceRefresh = false) {
+        // Check cache first
+        if (!forceRefresh && this.cachedData && this.cacheTimestamp) {
+            const cacheAge = Date.now() - this.cacheTimestamp;
+            if (cacheAge < this.cacheTimeout) {
+                this.renderCachedData();
+                return;
+            }
+        }
+        
         this.setStatus('loading', 'Fetching latest activity...');
         this.refreshBtn.classList.add('loading');
+        
+        // Update aria-busy attribute
+        if (this.activityFeed) {
+            this.activityFeed.setAttribute('aria-busy', 'true');
+        }
         
         try {
             // Fetch user data and repositories
             const [userResponse, reposResponse, eventsResponse] = await Promise.all([
-                fetch(`${this.apiBase}/users/${this.username}`),
-                fetch(`${this.apiBase}/users/${this.username}/repos?sort=updated&per_page=10`),
-                fetch(`${this.apiBase}/users/${this.username}/events/public?per_page=15`)
+                fetch(`${this.apiBase}/users/${this.username}`, {
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                }),
+                fetch(`${this.apiBase}/users/${this.username}/repos?sort=updated&per_page=10`, {
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                }),
+                fetch(`${this.apiBase}/users/${this.username}/events/public?per_page=15`, {
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                })
             ]);
+            
+            // Check for rate limiting
+            if (userResponse.status === 403 || reposResponse.status === 403 || eventsResponse.status === 403) {
+                throw new Error('GitHub API rate limit exceeded');
+            }
             
             if (!userResponse.ok || !reposResponse.ok || !eventsResponse.ok) {
                 throw new Error('GitHub API request failed');
@@ -781,16 +952,42 @@ class GitHubActivityFeed {
             const reposData = await reposResponse.json();
             const eventsData = await eventsResponse.json();
             
+            // Cache the data
+            this.cachedData = { userData, reposData, eventsData };
+            this.cacheTimestamp = Date.now();
+            this.retryCount = 0;
+            
             this.updateStats(userData, reposData, eventsData);
             this.renderActivity(eventsData, reposData);
             this.setStatus('success', `Last updated: ${new Date().toLocaleTimeString()}`);
             
         } catch (error) {
             console.error('GitHub API Error:', error);
-            this.handleError();
+            
+            // Try retry logic
+            if (this.retryCount < this.maxRetries) {
+                this.retryCount++;
+                setTimeout(() => {
+                    this.loadActivity(forceRefresh);
+                }, 2000 * this.retryCount); // Exponential backoff
+            } else {
+                this.handleError(error.message);
+            }
+        } finally {
+            this.refreshBtn.classList.remove('loading');
+            if (this.activityFeed) {
+                this.activityFeed.setAttribute('aria-busy', 'false');
+            }
         }
+    }
+    
+    renderCachedData() {
+        if (!this.cachedData) return;
         
-        this.refreshBtn.classList.remove('loading');
+        const { userData, reposData, eventsData } = this.cachedData;
+        this.updateStats(userData, reposData, eventsData);
+        this.renderActivity(eventsData, reposData);
+        this.setStatus('success', `Showing cached data from ${new Date(this.cacheTimestamp).toLocaleTimeString()}`);
     }
     
     updateStats(userData, reposData, eventsData) {
@@ -933,30 +1130,74 @@ class GitHubActivityFeed {
         statusText.textContent = message;
     }
     
-    handleError() {
-        this.setStatus('error', 'Failed to load GitHub activity');
-        this.activityFeed.innerHTML = `
-            <div class="activity-loading">
-                <p>Unable to load GitHub activity. Please try again later.</p>
-                <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.7;">
-                    This might be due to API rate limits or network issues.
-                </p>
-            </div>
-        `;
+    handleError(message = 'Failed to load GitHub activity') {
+        this.setStatus('error', message);
         
-        // Reset stats
-        Object.values(this.statsElements).forEach(element => {
-            element.textContent = '-';
-        });
+        if (this.activityFeed) {
+            this.activityFeed.innerHTML = `
+                <div class="activity-loading">
+                    <p>Unable to load GitHub activity. Please try again later.</p>
+                    <p style="font-size: 0.8rem; margin-top: 10px; opacity: 0.7;">
+                        ${message.includes('rate limit') 
+                            ? 'GitHub API rate limit exceeded. Please try again in a few minutes.' 
+                            : 'This might be due to API rate limits or network issues.'}
+                    </p>
+                    <button onclick="location.reload()" style="margin-top: 15px; padding: 8px 16px; background: var(--primary); border: none; border-radius: 8px; color: white; cursor: pointer;">
+                        Retry
+                    </button>
+                </div>
+            `;
+        }
+        
+        // Reset stats only if no cached data
+        if (!this.cachedData) {
+            Object.values(this.statsElements).forEach(element => {
+                if (element) element.textContent = '-';
+            });
+        }
     }
 }
 
-// Initialize all systems when page loads
-window.addEventListener('load', () => {
-    new ParticleSystem();
-    new HomeParticleSystem();
-    new MouseTrail();
-    new MatrixRain();
+// Performance optimization: Use requestIdleCallback for non-critical animations
+function initializeEffects() {
+    // Critical: Initialize immediately
     initParallax();
     new GitHubActivityFeed();
+    
+    // Non-critical: Defer until browser is idle
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(() => {
+            new ParticleSystem();
+            new HomeParticleSystem();
+            new MouseTrail();
+            new MatrixRain();
+        }, { timeout: 2000 });
+    } else {
+        // Fallback for browsers without requestIdleCallback
+        setTimeout(() => {
+            new ParticleSystem();
+            new HomeParticleSystem();
+            new MouseTrail();
+            new MatrixRain();
+        }, 1000);
+    }
+}
+
+// Pause animations when tab is not visible
+document.addEventListener('visibilitychange', () => {
+    const canvases = document.querySelectorAll('canvas');
+    canvases.forEach(canvas => {
+        if (document.hidden) {
+            canvas.style.display = 'none';
+        } else {
+            canvas.style.display = 'block';
+        }
+    });
 });
+
+// Initialize all systems when page loads
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeEffects);
+} else {
+    initializeEffects();
+}
